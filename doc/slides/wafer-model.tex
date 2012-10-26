@@ -1,0 +1,110 @@
+% Author: Andreas Menge
+\documentclass[10pt]{article}
+\usepackage{tikz}
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+%transforms all coordinates the same way when used (use it within a scope!)
+%(rotation is not 45 degress to avoid overlapping edges)
+% Input: point of origins x and y coordinate
+\newcommand{\myGlobalTransformation}[2]
+{
+    \pgftransformcm{1}{0}{0.4}{0.5}{\pgfpoint{#1cm}{#2cm}}
+}
+
+
+\tikzstyle myBG=[line width=4pt,opacity=1.0]
+
+\def\focuses{0, 2.25, 4.5, 6.75, 9, 11.25, 13.5}
+
+% draws lines with white background to show which lines are closer to the
+% viewer (Hint: draw from bottom up and from back to front)
+%Input: start and end point
+\newcommand{\drawLinewithBG}[3]
+{
+    \draw[draw=white,myBG]  (#1) -- (#2);
+    \draw[draw=#3,very thick] (#1) -- (#2);
+}
+
+% draws all horizontal graph lines within grid
+\newcommand{\graphLinesHorizontal}[1]
+{
+    \drawLinewithBG{1,1}{5,1}{#1};
+    \drawLinewithBG{1,3}{5,3}{#1};
+    \drawLinewithBG{1,5}{5,5}{#1};
+}
+
+% draws all vertical graph lines within grid
+\newcommand{\graphLinesVertical}[1]
+{
+    %swaps x and y coordinate (hence vertical lines):
+    \pgftransformcm{0}{1}{1}{0}{\pgfpoint{0cm}{0cm}}
+    \graphLinesHorizontal{#1};
+}
+
+%draws nodes of the grid
+%Input: point of origins x and y coordinate
+\newcommand{\graphThreeDnodes}[3]
+{
+    \begin{scope}
+        \myGlobalTransformation{#1}{#2};
+        \foreach \x in {1,3,5} {
+            \foreach \y in {1,3,5} {
+                \node at (\x,\y) [circle,fill=#3] {};
+                %this way circle of nodes will not be transformed
+            }
+        }
+    \end{scope}
+}
+
+
+\begin{document}
+\pagestyle{empty}
+
+
+\begin{tikzpicture}
+
+  \draw [darkgray, very thick, <-] (0,-14) -- (0, 2) node
+        [very near start,sloped, above] {{\Large focus}};
+
+  \foreach \color / \shift in
+           {blue/{(0,0)}, green/{(8,0)}, red/{(16,0)},
+             cyan/{(2,-8)}, magenta/{(10,-8)}} {
+
+    \begin{scope}[shift=\shift]
+      \foreach \z in {-4.5, -2.25, 0} {
+        %draws inner graph lines and those in z-direction:
+        \begin{scope}
+          \myGlobalTransformation{0}{\z};
+
+          %draws all graph lines in z-direction (reset transformation first!):
+          \foreach \x in {1,3,5} {
+            \foreach \y in {1,3,5} {
+              \node (thisNode) at (\x,\y) {};
+                    {
+                      \pgftransformreset
+                      \draw[draw=white,myBG]  (thisNode) -- ++(0,-2.25);
+                      \draw[draw=\color,very thick] (thisNode) -- ++(0,-2.25);
+                    }
+            }
+          }
+
+          \graphLinesHorizontal{\color};
+          \graphLinesVertical{\color};
+        \end{scope}
+      }
+
+      % draws all graph nodes:
+      \foreach \z in {-4.5, -2.25, 0} {
+        \graphThreeDnodes{0}{\z}\color;
+      }
+    \end{scope}
+  }
+
+\end{tikzpicture}
+
+\end{document}

@@ -1,0 +1,172 @@
+.TH "SOLVE" 1 2009 "Ben Gurion University of the Negev" "Uncertima User's Manual"
+.\" solve 
+.SH NAME
+solve \- solve an optimization under uncertainty problem
+.SH SYNOPSIS
+.LP
+\fBsolve\fP [OPTIONS] \fIproblem\fP \fIobject\fP [\fIhypothesis\fP]
+.br
+\fBsolvex\fP [OPTIONS] \fIproblem\fP \fIobject\fP [\fIhypothesis\fP]
+.SH DESCRIPTION
+.LP
+The \fIsolve\fP utility solves an optimization under uncertainty
+problem. It takes a problem definition file (see \fIUncertima Manual\fP
+for the format definition) and an object identifier and maximizes
+the expected utility of the found solution. \fIsolvex\fP is the same utility
+compiled with aggressive optimization options and
+turned off integrity checks.
+.LP
+Optionally, \fIsolve\fP can prime its beliefs with a hypothesis. The
+hypothesis data is specified as the third, optional parameter. The file
+format is the same as for the object simulator (see \fIUncertima Manual\fP).
+.LP
+A sequence of algorithms, each using up a fraction of the total budget
+allocated according to the sub-budget function, can be specified.
+The algorithms, the parameters, the total budget, and the sub-budget
+functions are defined using command-line options. The object is either
+controlled via XML-RPC, or simulated based on data read from the file. 
+.LP
+\fIsolve\fP prints the problem synopsis and the solution to the 
+standard output, in the following format:
+.RS
+.sp
+.nf
+problem:  \fIproblem\fP
+object: \fIobject\fP
+log: \fIlog prefix\fP
+hypothesis: \fIhypothesis\fP
+solution: {\fIparameter-name\fP=\fIvalue\fP} => \fIutility-name\fP=\fIvalue\fP / surplus=\fIvalue\fP
+.fi
+.sp
+.RE
+and stores information about actions and beliefs in the log files
+(see \fIUncertima Manual\fP) for the detailed description.
+Additionally, it may print warning, error messages, and debugging information
+to the error output.
+.SH OPTIONS
+.LP
+The command-line options control the algorithms to be used, budget allocation
+for each of the algorithms, the computation precision, and the logging.
+.SS General Options
+.LP
+.TP 12
+\fB-help, --help\fP
+Display the help message and exit. The help message is also displayed
+if there are errors in the command-line syntax.
+.SS Algorithms and Budgets
+.LP
+.TP 12
+\fB-a \fIalgorithm\fP\fP
+The algorithm. The currently implemented algorithms are \fBmontecarlo\fP,
+\fBmyopic\fP (default), and \fBblinkered\fP. Algorithms \fBMyopic\fP and
+\fBBlinkered\fP (uppercase) are versions of \fImyopic\fP and
+\fIblinkered\fP which rationally re-compute the value of information
+according to the cost of computing the benfit (see \fB-c\fP). Each
+algorithm uses up at most the currently specified sub-budget.
+.TP 12
+\fB-B \fIbudget\fP\fP
+The total budget. The program stops when either a solution is found or the
+budget is exhausted. By default, the budget is infinite.
+.TP 12
+\fB-b \fIsub-budget\fP\fP
+The sub-budget for the current algorithm. The interpretation of the
+number depends on the sub-budget function used. No default.
+.TP 12
+\fB-f \fIfunction\fP\fP
+The sub-budget function. The supported functions are 
+.RS
+.IP \fBgreedy\fP
+Use up all of the budget left. The sub-budget value is ignored. This is the default function.
+.IP \fBfixed\fP
+Use at most the sub-budget.
+.IP \fBsurplus\fP
+Leave at least the sub-budget for the rest of the algorithms.
+.IP \fBfraction\fP
+Use at most the fraction of the total budget.
+.RE
+.TP 12
+\fB-s\fP
+Run in the simulation mode. The object is the simulation data file.
+.TP 12
+\fB-r \fIlimit\fP\fP
+The maximum number of recurring measurements in the simulation mode; ignored
+if \fB-s\fP is not specified.
+.TP 12
+\fB-noprobe\fP
+Do not probe for measurements before selecting them; saves time and bandwidth.
+.SS Computation Precision
+.LP
+Reasonable defaults are used for the options in this section.
+.TP 12
+\fB-i \fInumber\fP\fP 
+Number of integration points in Monte-Carlo integration.
+.TP 12
+\fB-j \fInumber\fP\fP
+Number of belief propagation passes in the lattice dependency model.
+.TP 12
+\fB-p \fIprecision\fP\fP
+Monte-Carlo integration precision.
+.TP 12
+\fB-q \fIprecision\fP\fP
+Belief update precision in the lattice dependency model.
+.TP 12
+\fB-c \fIcost\fP\fP
+The cost of computing the benefit of a single
+action. Used by metahead algorithms (\fIMyopic\fP and \fIBlinkered\fP)
+and is 0 by default. The greater the value, the less time is spent
+recomputing the values; the benefit recomputation value is estimated
+imprecisely, thus a suitable re-computation cost should be
+guessed or determined experimentally for a particular problem.
+.SS Logging and Debugging
+.TP 12
+\fB-l \fIprefix\fP\fP
+The log file prefix. Three log files are created for each invocation:
+.RS
+.IP \fB\fIprefix\fP.obs\fP
+The observation log.
+.IP \fB\fIprefix\fP.bel\fP
+The beliefs in each observation location at the end of each
+algorithm.
+.IP \fB\fIprefix\fP.opn\fP
+The utilties and their components (`opinions') in each optimization
+location at the end of each algorithm.
+.RE
+.TP 12
+\fB-d\fP
+Print debugging information.
+
+.SH EXAMPLES
+.LP
+.nf
+solve -s svm.p svm-ft.s
+.fi
+.LP
+.RS
+Solve the \fIsvm\fP problem using simulated measurement outcomes
+specified in \fIsvm-ft.s\fP.
+.RE
+.LP
+.nf
+solve -f fraction -b 0.3 -a myopic -f greedy -a blinkered -B 10 telescope.p http://example.com/telescope
+.fi
+.LP
+.RS
+Solve the \fItelescope\fP problem, controlling the object via the XML-RPC interface at \fIhttp://example.com/telescope\fP. Spend no more than 10 units of time. Run the myopic algorithm for at most  30% of
+the total budget, and the blinkered algorithm for the rest of the time.
+.SH NOTES
+.LP
+The utility is written in the Objective Caml programming language. Its optimized version is compiled
+using \fIocamlopt\fP into the native code of the target architecture. The utility can also be compiled
+into \fIJava Virtual Machine\fP bytecodes using the \fIocamljava\fP compiler (http://ocamljava.x9c.fr/).
+.LP
+\fIsolve\fP is a part of the \fIUncertima Optimization under Uncertainty Toolkit\fP.
+The toolkit development is partially supported by the IMG4 consortium under the MAGNET program,
+funded by the Israel Ministry of Trade and Industry, and by the Lynne and William Frankel
+center for computer sciences.
+.SH BUGS
+.LP
+Some exceptions are uncaught.
+.SH SEE ALSO
+.LP
+The input and output formats, the algorithms used, and the complementary tools are described
+in \fIUncertima Optimization Toolkit Manual\fP.

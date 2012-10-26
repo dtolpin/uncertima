@@ -1,0 +1,172 @@
+SOLVE(1)                    Uncertima User's Manual                   SOLVE(1)
+
+
+
+NNAAMMEE
+       solve - solve an optimization under uncertainty problem
+
+SSYYNNOOPPSSIISS
+       ssoollvvee [OPTIONS] _p_r_o_b_l_e_m _o_b_j_e_c_t [_h_y_p_o_t_h_e_s_i_s]
+       ssoollvveexx [OPTIONS] _p_r_o_b_l_e_m _o_b_j_e_c_t [_h_y_p_o_t_h_e_s_i_s]
+
+DDEESSCCRRIIPPTTIIOONN
+       The  _s_o_l_v_e utility solves an optimization under uncertainty problem. It
+       takes a problem definition file (see _U_n_c_e_r_t_i_m_a _M_a_n_u_a_l  for  the  format
+       definition) and an object identifier and maximizes the expected utility
+       of the found solution. _s_o_l_v_e_x is the same utility compiled with aggres-
+       sive optimization options and turned off integrity checks.
+
+       Optionally, _s_o_l_v_e can prime its beliefs with a hypothesis. The hypothe-
+       sis data is specified as the third, optional parameter. The file format
+       is the same as for the object simulator (see _U_n_c_e_r_t_i_m_a _M_a_n_u_a_l).
+
+       A  sequence of algorithms, each using up a fraction of the total budget
+       allocated according to the sub-budget function, can be specified.   The
+       algorithms,  the parameters, the total budget, and the sub-budget func-
+       tions are defined using command-line options. The object is either con-
+       trolled via XML-RPC, or simulated based on data read from the file.
+
+       _s_o_l_v_e prints the problem synopsis and the solution to the standard out-
+       put, in the following format:
+
+              problem:  _p_r_o_b_l_e_m
+              object: _o_b_j_e_c_t
+              log: _l_o_g _p_r_e_f_i_x
+              hypothesis: _h_y_p_o_t_h_e_s_i_s
+              solution: {_p_a_r_a_m_e_t_e_r_-_n_a_m_e=_v_a_l_u_e} => _u_t_i_l_i_t_y_-_n_a_m_e=_v_a_l_u_e / surplus=_v_a_l_u_e
+
+       and stores information about actions and beliefs in the log files  (see
+       _U_n_c_e_r_t_i_m_a  _M_a_n_u_a_l)  for the detailed description.  Additionally, it may
+       print warning, error messages, and debugging information to  the  error
+       output.
+
+OOPPTTIIOONNSS
+       The  command-line  options  control  the  algorithms to be used, budget
+       allocation for each of the algorithms, the computation  precision,  and
+       the logging.
+
+   GGeenneerraall OOppttiioonnss
+       --hheellpp,, ----hheellpp
+                   Display the help message and exit. The help message is also
+                   displayed if there are errors in the command-line syntax.
+
+   AAllggoorriitthhmmss aanndd BBuuddggeettss
+       --aa _a_l_g_o_r_i_t_h_m
+                   The algorithm. The  currently  implemented  algorithms  are
+                   mmoonntteeccaarrlloo,  mmyyooppiicc  (default),  and  bblliinnkkeerreedd. Algorithms
+                   MMyyooppiicc and BBlliinnkkeerreedd (uppercase) are versions of _m_y_o_p_i_c and
+                   _b_l_i_n_k_e_r_e_d which rationally re-compute the value of informa-
+                   tion according to the cost of  computing  the  benfit  (see
+                   --cc). Each algorithm uses up at most the currently specified
+                   sub-budget.
+
+       --BB _b_u_d_g_e_t   The total budget. The program stops when either a  solution
+                   is found or the budget is exhausted. By default, the budget
+                   is infinite.
+
+       --bb _s_u_b_-_b_u_d_g_e_t
+                   The sub-budget for the current algorithm.  The  interpreta-
+                   tion of the number depends on the sub-budget function used.
+                   No default.
+
+       --ff _f_u_n_c_t_i_o_n The sub-budget function. The supported functions are
+
+                   ggrreeeeddyy Use up all of the budget left. The sub-budget  value
+                          is ignored. This is the default function.
+
+                   ffiixxeedd  Use at most the sub-budget.
+
+                   ssuurrpplluuss
+                          Leave  at  least  the sub-budget for the rest of the
+                          algorithms.
+
+                   ffrraaccttiioonn
+                          Use at most the fraction of the total budget.
+
+       --ss          Run in the simulation mode. The object  is  the  simulation
+                   data file.
+
+       --rr _l_i_m_i_t    The maximum number of recurring measurements in the simula-
+                   tion mode; ignored if --ss is not specified.
+
+       --nnoopprroobbee    Do not probe for measurements before selecting them;  saves
+                   time and bandwidth.
+
+   CCoommppuuttaattiioonn PPrreecciissiioonn
+       Reasonable defaults are used for the options in this section.
+
+       --ii _n_u_m_b_e_r   Number of integration points in Monte-Carlo integration.
+
+       --jj _n_u_m_b_e_r   Number  of  belief propagation passes in the lattice depen-
+                   dency model.
+
+       --pp _p_r_e_c_i_s_i_o_n
+                   Monte-Carlo integration precision.
+
+       --qq _p_r_e_c_i_s_i_o_n
+                   Belief update precision in the lattice dependency model.
+
+       --cc _c_o_s_t     The cost of computing the benefit of a single action.  Used
+                   by  metahead  algorithms (_M_y_o_p_i_c and _B_l_i_n_k_e_r_e_d) and is 0 by
+                   default. The greater the value,  the  less  time  is  spent
+                   recomputing  the values; the benefit recomputation value is
+                   estimated imprecisely, thus a suitable re-computation  cost
+                   should  be  guessed or determined experimentally for a par-
+                   ticular problem.
+
+   LLooggggiinngg aanndd DDeebbuuggggiinngg
+       --ll _p_r_e_f_i_x   The log file prefix. Three log files are created  for  each
+                   invocation:
+
+                   _p_r_e_f_i_x..oobbss
+                          The observation log.
+
+                   _p_r_e_f_i_x..bbeell
+                          The  beliefs in each observation location at the end
+                          of each algorithm.
+
+                   _p_r_e_f_i_x..ooppnn
+                          The utilties and their  components  (`opinions')  in
+                          each  optimization location at the end of each algo-
+                          rithm.
+
+       --dd          Print debugging information.
+
+
+EEXXAAMMPPLLEESS
+       solve -s svm.p svm-ft.s
+
+              Solve the _s_v_m problem using simulated measurement outcomes spec-
+              ified in _s_v_m_-_f_t_._s.
+
+       solve -f fraction -b 0.3 -a myopic -f greedy -a blinkered -B 10 telescope.p http://example.com/telescope
+
+              Solve the _t_e_l_e_s_c_o_p_e problem, controlling the object via the XML-
+              RPC interface at  _h_t_t_p_:_/_/_e_x_a_m_p_l_e_._c_o_m_/_t_e_l_e_s_c_o_p_e.  Spend  no  more
+              than 10 units of time. Run the myopic algorithm for at most  30%
+              of the total budget, and the blinkered algorithm for the rest of
+              the time.
+
+NNOOTTEESS
+       The  utility is written in the Objective Caml programming language. Its
+       optimized version is compiled using _o_c_a_m_l_o_p_t into the  native  code  of
+       the  target  architecture.  The  utility can also be compiled into _J_a_v_a
+       _V_i_r_t_u_a_l _M_a_c_h_i_n_e bytecodes using the _o_c_a_m_l_j_a_v_a  compiler  (http://ocaml-
+       java.x9c.fr/).
+
+       _s_o_l_v_e  is  a part of the _U_n_c_e_r_t_i_m_a _O_p_t_i_m_i_z_a_t_i_o_n _u_n_d_e_r _U_n_c_e_r_t_a_i_n_t_y _T_o_o_l_-
+       _k_i_t.  The toolkit development is partially supported by the  IMG4  con-
+       sortium  under  the  MAGNET  program,  funded by the Israel Ministry of
+       Trade and Industry, and by the Lynne and  William  Frankel  center  for
+       computer sciences.
+
+BBUUGGSS
+       Some exceptions are uncaught.
+
+SSEEEE AALLSSOO
+       The  input  and output formats, the algorithms used, and the complemen-
+       tary tools are described in _U_n_c_e_r_t_i_m_a _O_p_t_i_m_i_z_a_t_i_o_n _T_o_o_l_k_i_t _M_a_n_u_a_l.
+
+
+
+Ben Gurion University of the Negev   2009                             SOLVE(1)

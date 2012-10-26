@@ -1,0 +1,4 @@
+
+latex test.tex
+dvips -q -f -e 0 -E -o test.eps test.dvi
+pstoedit -f plot-svg -dt -ssp test.eps test.svg

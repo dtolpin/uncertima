@@ -1,0 +1,52 @@
+\documentclass[]{article}
+
+\title{Implementing Toolkit for Optimization under Uncertainty in OCaml}
+ 
+
+\author{  {\bf David Tolpin} \\
+Computer Science Dept. \\  
+Ben-Gurion University \\ 
+84105 Beer-Sheva, Israel \\ 
+\and
+ {\bf Solomon Eyal Shimony}  \\ 
+Computer Science Dept. \\  
+Ben-Gurion University \\ 
+84105 Beer-Sheva, Israel \\ 
+}
+
+
+\begin{document} 
+ 
+\maketitle 
+
+\begin{abstract} 
+
+We present a Toolkit for Optimization under Uncertainty, a framework for
+development and deployment of meta-reasoning algorithms for parameter
+optimization under uncertainty. The core code of the toolkit is written
+in Objective CAML. We show how the power of the functional programming
+language helped us to
+
+\begin{itemize}
+\item design and implement a compact language for definition
+      of optimization problems by combining first-class functions with
+      the traditional YACC-style parser specifications;
+\item build a general problem domain-oriented structure and query
+      it lazily according to the needs of each module using the powerful
+      pattern matching capabilitie;
+\item flexibly connect toolkit components using both covenient input
+      and output formats and remote process communication via XML-RPC.
+\end{itemize}
+
+We compile the code with the INRIA's Objective Caml optimizing compiler
+for performance or with the OCaml-Java compiler for easier deployment
+with other tools and on different platforms. The toolkit can either be
+used as a standalone environment for design and research of algorithms,
+or linked to other code as a library for solving optimization problems.
+
+The project artially supported by the IMG4 consortium under the MAGNET
+program, funded by the Israel Ministry of Trade and Industry, and by
+the Lynne and William Frankel center for computer sciences.
+
+\end{abstract}
+\end{document}

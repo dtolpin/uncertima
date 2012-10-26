@@ -1,0 +1,379 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>IMG5 Y5 Report: VOI-driven Optimization Algorithms</title>
+    <!-- metadata -->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="S5" />
+    <meta name="version" content="S5 1.1" />
+    <meta name="presdate" content="20091212" />
+    <meta name="author" content="David Tolpin" />
+    <meta name="company" content="Ben Gurion University of the Negev" />
+    <!-- configuration parameters -->
+    <meta name="defaultView" content="slideshow" />
+    <meta name="controlVis" content="hidden" />
+    <!-- style sheet links -->
+    <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+    <style type="text/css">
+      dt {font-weight: bold}
+      dd {margin-bottom: 0.5em}
+      table.table-with-border {border-collapse: collapse; margin: 0.5em}
+      table.table-with-border td, table.table-with-border th
+        {border: thin solid black; padding: 0.5em}
+    </style>
+    <!-- ASCIIMathML JS -->
+    <script type="text/javascript" src="ASCIIMathML.js"></script>
+    <!-- S5 JS -->
+    <script src="ui/default/slides.js" type="text/javascript"></script>
+  </head>
+  <body>
+
+    <div class="layout">
+      <div id="controls"><!-- DO NOT EDIT --></div>
+      <div id="currentSlide"><!-- DO NOT EDIT --></div>
+      <div id="header"></div>
+      <div id="footer">
+	<h1>Ben Gurion University of the Negev/31.12.2009</h1>
+	<h2>IMG5 Y5 Report: VOI-driven Optimization Algorithms</h2>
+      </div>
+
+    </div>
+
+    <div class="presentation">
+
+       <div class="slide">
+	<h1>Rational Value of Information Estimation<br/><span style="margin-left: 4em"/> for Measurement Selection</h1>
+      </div>
+
+     <div class="slide">
+	<h1>Problem Formulation</h1>
+        <div style="font-size: 0.9em">
+          <p>
+            Given:
+          </p>
+          <ul>
+            <li>A set of $N_s$ items $S=\{s_1, s_2, \ldots, s_{N_s}\}$.</li>
+            <li>A set of $N_f$ item features $Z=\{ z_1, z_2, \ldots, z_{N_f}\}$.</li>
+            <li>A joint distribution over the features of the items in $S$.</li>
+            <li>A set of measurement types $M=\{(c, p)_k\:|\; k \in 1..N_m\}$.</li>
+            <li>A utility function $u(\overline z):\mathbb{R}^{N_f}\to\mathbb{R}$ on features.</li>
+            <li>A measurement budget $C$.</li>
+          </ul>
+          <p>Find a policy of measurement decisions and a final selection
+          that maximize the expected reward:
+          </p>
+          <p>
+            max: $R=u(\overline z(s_\alpha))-\sum_{i=1}^{N_q}c_{k_i}$ s.t.: $\sum_{i=1}^{N_q}c_{k_i}\le C$
+          </p>
+          <p>where</p>
+          <ul>
+            <li>$Q=\{(k_i,s_i)\:|\;i \in 1..N_q\}$ is the performed measurement sequence</li>
+            <li>$s_\alpha$ is the selected item.</li>
+          </ul>
+        </div>
+	<div class="handout">
+	</div>
+      </div>
+
+  
+      <div class="slide">
+        <h1>Rational Computation of VOI</h1>
+        <p>Belief $BEL(\Lambda_j)$ about intrinsic VOI is modeled by a
+        normal distribution:
+        $$BEL(\Lambda_j)=N(\Lambda_j, \varsigma_j^2)$$
+        </p>
+        <p>The uncertainty is expressed by adding Gaussian noise:
+        $$\varsigma_j^2 \leftarrow \varsigma_j^2+\tau^2$$
+        </p>
+        <p>Value of recomputing VOI is efficiently computable:
+        $$W_k=\frac {\varsigma_k} {\sqrt {2\pi}} e^{\left(-\frac {\left(V_\gamma-V_k\right)^2} {2\varsigma_k^2}\right)}-\left|V_\gamma-V_k\right|\Phi\left(-\frac {\left|V_\gamma-V_k\right|} {\varsigma_k} \right)-c_V$$
+        </p>
+        <h3>Obtaining The Uncertainty Parameter &tau;<sup>2</sup></h3>
+        <ul>
+          <li>Either offline, as a function of the total cost of measurements performed.</li>
+          <li>Or online, from earlier recomputations of VOI during the same run &#x2014; robust and easy to implement.</li>
+        </ul>
+        <div class="handout">
+        </div>
+      </div>
+
+      <div class="slide">
+	<h1>Rationally Recomputing Algorithm</h1>
+	<table width="100%">
+	  <tr><th>Original</th><th>Rational</th></tr>
+	  <tr><td>
+<pre>budget &larr; C
+initialize beliefs
+<b>loop</b>
+  <b>forall</b> items s<sub>i</sub>
+      compute 𝔼(U<sub>i</sub>)
+  <b>endfor</b>
+  <span style="background-color: #fcc"><b>forall</b> measurements m<sub>j</sub>
+    <b>if</b> c<sub>j</sub> &le; budget
+      compute V<sub>j</sub>
+    <b>else</b>
+      V<sub>j</sub> &larr; 0
+    <b>endif</b>
+  <b>endfor</b>
+  j<sub>max</sub> &larr; argmax<sub>j</sub> V<sub>j</sub></span>
+  <b>if</b> V<sub>j<sub>max</sub></sub> &gt; 0
+    perform measurement m<sub>j<sub>max</sub></sub>
+    update beliefs
+    budget &larr; budget &minus; c<sub>j<sub>max</sub></sub>
+  <b>else</b>
+    <b>break</b>
+  <b>endif</b>
+<b>endfor</b>
+&alpha; &larr; argmax<sub>i</sub> 𝔼(U<sub>i</sub>)
+<b>return</b> x<sub>&alpha;</sub></pre>
+</td>
+<td>
+<pre><span style="background-color: #cfc"><b>forall</b> {measurements $m_j$}
+     <b>if</b> c<sub>j</sub> &le; budget
+       V<sub>j</sub> &larr; &Lambda;<sub>j</sub>-c<sub>j</sub>; &sigmaf;<sub>j</sub> &larr; &radic;<span style="border-top: thin solid black">(&sigmaf;<sub>j</sub><sup>2</sup>+&tau;<sup>2</sup>)</span>
+     <b>else</b>
+       v<sub>j</sub> &larr; 0; &sigmaf;<sub>j</sub> &larr; 0
+     <b>endif</b>
+  <b>endfor</b>
+  <b>loop</b>
+    <b>forall</b> measurements m<sub>k</sub>
+       <b>if</b> c<sub>k</sub> &le; budget
+         compute W<sub>k</sub>
+       <b>else</b>
+         W<sub>k</sub> &larr; 0
+       <b>endif</b>
+    <b>endfor</b> 
+    k<sub>max</sub> &larr; argmax<sub>k</sub> W<sub>k</sub>
+    <b>if</b> W<sub>k<sub>max</sub></sub> &le; 0
+       break
+    <b>endif</b>
+    compute &Lambda;<sub>k<sub>max</sub></sub>; V<sub>k<sub>max</sub></sub> &larr; &Lambda;<sub>k<sub>max</sub></sub>-c<sub>k<sub>max</sub></sub>; &sigmaf; &larr; 0
+  <b>endloop</b>
+  j<sub>max</sub> &larr; argmax V<sub>j</sub>
+  compute &Lambda;<sub>j<sub>max</sub></sub>; V<sub>j<sub>max</sub></sub> &larr; &Lambda;<sub>j<sub>max</sub></sub>-c<sub>j<sub>max</sub></sub>; &sigmaf; &larr; 0</span></pre></td>
+	  </tr>
+	</table>
+	<div class="handout">
+	</div>
+      </div>
+
+     <div class="slide">
+        <h1>Ackley function</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <td style="text-align: center">
+              <object data="ackley-shape.svg" style="width: 70%"> </object>
+            </td>
+          </tr>
+          <tr style="text-align: center; vertical-align: top">
+            <td>$A(x,y)=20\cdot \exp\left(-0.2\sqrt { \frac {x^2+y^2} 2}\right)+$
+                $\exp\left(\frac{cos(2\pi x)+cos(2\pi y)} 2\right)$</td>
+          </tr>
+        </table>
+ 	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+
+      <div class="slide">
+	<h1>Experiment: Maximizing Ackley Function</h1>
+	<div style="text-align:center">
+	  <object data="ackley-blinkered.svg" style="width: 80%"> </object>
+	</div>
+	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+
+     <div class="slide">
+        <h1>SVM Response Surface</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <td style="text-align: center">
+              <object data="svm-shape.svg" style="width: 90%"> </object>
+            </td>
+          </tr>
+        </table>
+ 	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+      <div class="slide">
+	<h1>Experiment: SVM parameter learning</h1>
+	<div style="text-align:center">
+	  <object data="svmguide2-myopic.svg" style="width: 80%"> </object>
+	</div>
+	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+      <div class="slide">
+	<h1>Summary</h1>
+        <h2>Contributions</h2>
+        <ul>
+          <li>An improvement to VOI-based optimization algorithms.</li>
+          <li>The improvement allows to decrease the computation time while only slightly affecting the performance.</li>
+          <li>
+            The algorithm
+             <ul>
+               <li>rationally reuses computations of VOI</li>
+               <li>only recomputes VOI which are likely to affect the choice of the next measurement.</li>
+             </ul>
+          </li>
+          <li>Presented at URPDM 2010 (Coimbra, Portugal)</li>
+        </ul>
+	<div class="handout">
+	</div>
+      </div>
+
+      <div class="slide">
+	<h1 style="position: static; margin: 1em 0 0; padding: 0; font: bold 2em Helvetica, sans-serif;
+                   white-space: normal; color: #000; background: transparent" >Optimizing Parameters of Expert Rules</h1>
+      </div>
+
+      <div class="slide">
+        <h1>Problem: Parameter Tuning</h1>
+        Provided by Orbotech:
+        <ul>
+          <li>Rules as a <b>decision tree.</b></li>
+          <li>Rules have 10 parameters &#x2014; thresholds in the nodes.</li>
+          <li>Data set of 390 samples.</li>
+          <li>Parameters to maximize accuracy on 2 classes (defect/no defect) must be selected.</li>
+        </ul>
+        Challenge: search space is huge &#x2014; ($10^{10}$ for 10 possible values of each parameter).
+      </div>
+
+      <div class="slide">
+        <h1>Solution Approaches</h1>
+        Known multi-parameter optimization algorithms:
+        <ul>
+          <li>iterative sequential optimization (ISO);</li>
+          <li>Latin Hypercube sampling (LHS) followed by local search (LS);</li>
+          <li>Simulated annealing.</li>
+          <li>...</li>
+        </ul>
+        Drawbacks:
+        <ul>
+          <li>Not good for Decision Tree optimizations (ISO)</li>
+          <li>Not <i>'any time'</i></li>
+        </ul>
+      </div>
+
+      <div class="slide" style="font-size: 0.85em">
+        <h1>Adaptation to VOI-based Search</h1>
+        <div>
+        <p>
+        <i>Difficulty:</i>
+        </p>
+        <ul>
+          <li>The search space is huge.</li>
+          <li>A single trial is cheaper than estimating VOI.</li>
+          <li>VOI-based search works best when:
+              <ul>
+                <li>The search space is relatively small.</li>
+                <li>Each measurement is expensive.</li>
+              </ul>
+          </li>
+        </ul>
+        </div>
+        <div class="incremental">
+        <p>
+        <i>Solution &#x2014; split the parameters into two subsets:</i>
+        </p>
+        <ul>
+          <li>S (strategical) &#x2014; parameters break samples into big groups.</li>
+          <li>T (tactical) &#x2014; fine-tune performance within a group.</li>
+        </ul>
+        </div>
+        <div class="incremental">
+        <p>
+        <i>Can be done quickly by evaluating the effect of changing the value of each parameter.</i>
+        </p>
+        <ul>
+          <li>Define informed search space on $S$ only.</li>
+          <li>For each combination from $S$, use simple search (ISO, LHS-LS) to find best combination from $T$. Each simple search is a single computation.</li>
+        </ul>
+        </div>
+        <div class="incremental" style="font-size: 110%; color: #33c">
+        <i>VOI-driven search can be applied:</i>
+        <ul>
+          <li><big>&#x2714;</big> Small search space (but still cannot search exhaustively).</li>
+          <li><big>&#x2714;</big> Expensive atomic computation.</li>
+        </ul>
+        </div>        
+      </div>
+
+      <div class="slide">
+        <h1>Summary</h1>
+        <h2>Results</h2>
+        <ul>
+          <li>3 parameters in $S$, 7 parameters in $T$.</li>
+          <li>Improved accuracy from 0.948 (pre-tuned by Orbotech) to 0.969.</li>
+          <li>Took only a few minutes on a laptop.</li>
+        </ul>
+        <h2>Conclusions</h2>
+        <ul>
+          <li>VOI-based informed search successfully applied to decision tree parameter tuning.</li>
+          <li>A problem can and should be adapted to the search algorithm.</li>
+        </ul>
+      </div>
+
+
+      <div class="slide">
+	<h1 style="position: static; margin: 1em 0 0; padding: 0; font: bold 2em Helvetica, sans-serif;
+                   white-space: normal; color: #000; background: transparent" >Optimization Toolkit:<br/><span style="padding-left: 4em"/>Implementation Enhancements</h1>
+      </div>
+
+      <div class="slide">
+        <h1>Object Control</h1>
+        <ul>
+          <li>XML-RPC based object control protocol has been added.</li>
+          <li>The search tool is the XML-RPC <i>client</i>.</li>
+          <li>The <i>client</i> sends requests to a <i>problem-specific server</i> to perform measurements.</li>
+        </ul>
+        <div class="incremental" style="font-style: italic">
+          Advantages:
+          <ul>
+            <li>Search algorithms can be applied top many problems.</li>
+            <li class="incremental">Problem-specific code can be written in any language.</li>
+            <li class="incremental">Remote objects can be controlled.</li>
+          </ul>
+        </div>
+        <div class="incremental" style="color: black">
+          <dl>
+            <dt>Proof-of-concept:</dt><dd>XML-RPC object for SVM Parameter Search.</p></dd>
+            <dt>Application:</dt><dd>Decision Tree Parameter Tuning.</dd>
+          </dl>
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Graphical Monitoring Inteface</h1>
+        <object data="monitor-screenshot.svg" style="width: 50%; float: right">
+        </object>
+        <ul>
+          <li>Monitoring
+          <ul>
+            <li>change rate of measurement location</li>
+            <li>change rate of best location</li>
+            <li>utility of best location</li>
+          </ul>
+          </li>
+          <li>Analysing expected utility for each combination 
+          of parameters.</li>
+          <li><i>TODO:</i> 3D response surface.</li>
+        </ul>
+      </div>
+    </div>
+  </body>
+</html>

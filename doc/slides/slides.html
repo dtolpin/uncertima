@@ -1,0 +1,242 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+  <head>
+    <title>UNCERTIMA: Toolkit for Optimization under Uncertainty</title>
+    <!-- metadata -->
+    <meta name="generator" content="S5" />
+    <meta name="version" content="S5 1.1" />
+    <meta name="presdate" content="20091212" />
+    <meta name="author" content="David Tolpin" />
+    <meta name="company" content="Ben Gurion University of the Negev" />
+    <!-- configuration parameters -->
+    <meta name="defaultView" content="slideshow" />
+    <meta name="controlVis" content="hidden" />
+    <!-- style sheet links -->
+    <link rel="stylesheet" href="ui/default/slides.css" type="text/css" media="projection" id="slideProj" />
+    <link rel="stylesheet" href="ui/default/outline.css" type="text/css" media="screen" id="outlineStyle" />
+    <link rel="stylesheet" href="ui/default/print.css" type="text/css" media="print" id="slidePrint" />
+    <link rel="stylesheet" href="ui/default/opera.css" type="text/css" media="projection" id="operaFix" />
+    <style type="text/css">
+      dt {font-weight: bold}
+      dd {margin-bottom: 0.5em}
+      table.table-with-border {border-collapse: collapse; margin: 0.5em}
+      table.table-with-border td, table.table-with-border th
+        {border: thin solid black; padding: 0.5em}
+    </style>
+    <!-- ASCIIMathML JS -->
+    <script type="text/javascript" src="ASCIIMathML.js"></script>
+    <!-- S5 JS -->
+    <script src="ui/default/slides.js" type="text/javascript"></script>
+  </head>
+  <body>
+
+    <div class="layout">
+      <div id="controls"><!-- DO NOT EDIT --></div>
+      <div id="currentSlide"><!-- DO NOT EDIT --></div>
+      <div id="header"></div>
+      <div id="footer">
+	<h1>Ben Gurion University of the Negev/31.12.2009</h1>
+	<h2>UNCERTIMA: Toolkit for Optimization under Uncertainty</h2>
+      </div>
+
+    </div>
+
+    <div class="presentation">
+
+      <div class="slide">
+	<h1>UNCERTIMA: Toolkit for Optimization under Uncertainty</h1>
+	<h3>Ben Gurion University of the Negev</h3>
+      </div>
+
+      <div class="slide">
+        <h1>UNCERTIMA</h1>
+        <div style="text-align:center">
+          <object data="app-toolkit-components.svg" style="width: 80%"> </object>
+        </div>
+        <div class="handout">
+          [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+
+      <div class="slide">
+	<h1>UNCERTIMA: Solver</h1>
+	<div style="text-align:center">
+	  <object data="app-solver.svg" style="width: 80%"> </object>
+	</div>
+	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>UNCERTIMA: Analysis</h1>
+        <div style="text-align:center">
+          <object data="analysis-mockup.svg" style="width: 60%"> </object>
+        </div>
+        <div class="handout">
+          [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Experiments: Functions: Shapes</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 50%">Ackley function</th>
+            <th style="width: 50%">Himmelblau function</th>
+          </tr>
+          <tr>
+            <td style="width: 50%">
+              <object data="ackley-x.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%">
+              <object data="himmelblau-x.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+          <tr style="text-align: center; vertical-align: top">
+            <td>$A(x,y)=20\cdot \exp\left(-0.2\sqrt { \frac {x^2+y^2} 2}\right)+$
+                $\exp\left(\frac{cos(2\pi x)+cos(2\pi y)} 2\right)$</td>
+            <td>$H(x,y)=16x-12y-(x^2+y-11)^2$ 
+                $-(x+y^2-7)^2$</td>
+          </tr>
+        </table>
+ 	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+      <div class="slide">
+        <h1>Experiments: Functions: Free Movements</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 50%">Ackley function</th>
+            <th style="width: 50%">Himmelblau function</th>
+          </tr>
+          <tr>
+            <td style="width: 50%; padding: 1em 0em">
+              <object data="obmark-free-ackley.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%: padding: 1em">
+              <object data="obmark-free-himmelblau.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+        </table>
+ 	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+      <div class="slide">
+        <h1>Experiments: Functions: Manhattan Movements</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 50%">Ackley function</th>
+            <th style="width: 50%">Himmelblau function</th>
+          </tr>
+          <tr>
+            <td style="width: 50%; padding: 1em 0em">
+              <object data="obmark-manhattan-ackley.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%: padding: 1em">
+              <object data="obmark-manhattan-himmelblau.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+        </table>
+ 	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+      <div class="slide">
+        <h1>Experiments: SVM: Shape</h1>
+
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 50%">usps</th>
+            <th style="width: 50%">svmguide2</th>
+          </tr>
+          <tr>
+            <td style="width: 50%">
+              <object data="svm-shape-usps-x.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%">
+              <object data="svm-shape-svmguide2-x.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+        </table>
+
+        <div class="handout">
+          [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+
+      <div class="slide">
+        <h1>Experiments: SVM: Results</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 50%">usps</th>
+            <th style="width: 50%">svmguide2</th>
+          </tr>
+          <tr>
+            <td style="width: 50%: padding: 1em">
+              <object data="svm-usps.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%; padding: 1em 0em">
+              <object data="svm-svmguide2.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+        </table>
+        <div class="handout">
+          [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+      
+     <div class="slide">
+	<h1>Experiments: Wafer: Model</h1>
+	<div style="text-align:center">
+	  <object data="wafer-model.svg" style="width: 90%"> </object>
+	</div>
+	<div class="handout">
+	  [any material that should appear in print but not on the slide]
+	</div>
+      </div>
+
+
+      <div class="slide">
+        <h1>Experiments: Wafer: Results</h1>
+        <table class="table-with-border" style="width: 100%">
+          <tr>
+            <th style="width: 20%">&nbsp;</th>
+            <th style="width: 40%">Wafer A</th>
+            <th style="width: 40%">Wafer B</th>
+          </tr>
+          <tr style="text-align: center; vertical-align: middle">
+            <th>myopic</th>
+            <td style="width: 50%: padding: 1em">
+              <object data="wafer-a-myopic.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%; padding: 1em 0em">
+              <object data="wafer-b-myopic.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+          <tr style="text-align: center; vertical-align: middle">
+            <th>blinkered</th>
+            <td style="width: 50%: padding: 1em">
+              <object data="wafer-a-blinkered.svg" style="width: 100%"> </object>
+            </td>
+            <td style="width: 50%; padding: 1em 0em">
+              <object data="wafer-b-blinkered.svg" style="width: 100%"> </object>
+            </td>
+          </tr>
+        </table>
+        <div class="handout">
+          [any material that should appear in print but not on the slide]
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

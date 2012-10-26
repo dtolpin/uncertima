@@ -1,0 +1,52 @@
+$Id: map.txt 814 2010-02-13 13:19:35Z tolpin $
+
+solve.ml         -- the command line driver
+finder.ml(i)     -- the finder framework
+log.ml(i)        -- logging facility
+conf.ml(i)       -- configuration parameters
+stat.ml(i)       -- counters, for gathering algorithm statistics
+
+simd.ml(i)       -- XML-RPC-controlled object simulator, for testing
+
+Algorithms
+
+algo.ml          -- abstract algorithm types
+plan.ml          -- plan abstraction
+planhead.ml(i)   -- planhead generic algorithm, takes
+                    plans iterator as argument
+metahead.ml(i)   -- metahead generic algorithm, takes
+		    plans iterator as argument
+myopic.ml(i)     -- myopic.scheme
+blinkered.ml(i)  -- blinkered scheme
+
+Problem Definition
+
+pdefinition.ml   -- data types and exceptions
+plexer.mll       -- tokenizer
+pparser.mly      -- parser
+pops.ml(i)       -- post-processing operations on
+                    problem definition
+
+Mechanism
+
+expression.ml(i) -- computing expression
+space.ml(i)      -- sensor space abstraction --
+                    coordinates and differences
+model.ml(i)      -- updating and quering model
+object.ml(i)     -- object controller and simulator
+remote.ml(i)     -- object control via XML-RPC (simd.ml is for testing)
+hypothesis.ml(i) -- initial hypothesis
+loc.ml(i)        -- location abstraction
+
+mk_s.ml          -- generates tests for object simulator
+
+Library 
+
+markov.ml(i)     -- markov random field for belief propagation
+ndist.ml(i)      -- gaussian distribution, probability
+                    and sampling
+
+Makefiles
+
+Makefile         -- ocaml compiler, bytecodes or native
+Makefile.jvm     -- ocamljava compiler, standalone jar

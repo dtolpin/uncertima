@@ -1,0 +1,33 @@
+UNCERTIMA Toolkit solve utility
+Source Distribution
+(C) IMG4 Concortium
+
+This distribution contains source code and minimal
+documentation for the solve utility of the UNCERTIMA Toolkit
+(see UNCERTIMA Manual, supplied separately, for full
+documentation).
+
+The source code is in src/, consult src/map.txt for detail.
+You'll need an OCaml compiler (http://caml.inria.fr/)
+to compile the utility to the native code, or OCaml Java
+(http://ocamljava.x9c.fr/) to compile to the JVM bytecode:
+
+  cd src/; make
+ 
+produces 
+  solve (bytecode version), 
+  solvex (optimized native code version)
+
+  cd src/; make -f Makefile.jvm
+
+produces
+  solve.jar (JVM .jar archive).
+
+src/solve.1 is the source man page, and doc/solve.man, doc/solve.ps
+are formatted man pages for solve.
+
+examples/ contains a few examples of problems and simulation files,
+consult examples/map.txt for detail.
+
+David Tolpin
+tolpin@cs.bgu.ac.il

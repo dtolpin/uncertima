@@ -1,0 +1,12 @@
+problems
+
+obmark_free.p -- function optimization, free movements
+obmark_manhattan.p -- function optimization, manhattan movement cost
+svm-f.p -- svm parameter search, full approach
+svm-i.p -- smv parameter search, incremental approach
+
+object simulation
+
+ackley.s -- ackley function
+himmelblau.s -- himmelblau function
+svmguide2.s -- svm training data, svmguide2 data set

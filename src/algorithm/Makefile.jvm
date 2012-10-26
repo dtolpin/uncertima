@@ -1,0 +1,98 @@
+# $Id: Makefile 450 2009-05-31 13:36:58Z tolpin $
+OCC=ocamljava
+OCFLAGS=-g
+OCLIBS=
+
+XCC=ocamlopt
+XCFLAGS=
+
+OFILES=ndist.cmj \
+       conf.cmj debug.cmj \
+       pdefinition.cmj plexer.cmj pparser.cmj pops.cmj \
+       loc.cmj expression.cmj markov.cmj model.cmj space.cmj
+       object.cmj hypothesis.cmj \
+       log.cmj \
+       algo.cmj planhead.cmj \
+       myopic.cmj blinkered.cmj \
+       finder.cmj solve.cmj \
+       mk_s.cmj
+
+.SUFFIXES: .mll .mly .ml .mli .cmi .cmj .1 .man .ps
+
+.mll.ml:
+	ocamllex $<
+
+.mly.ml:
+	ocamlyacc $<
+
+.mly.mli:
+	ocamlyacc $<
+
+.mli.cmi:
+	$(OCC) $(OCFLAGS) -c $<
+
+.ml.cmj:
+	$(OCC) $(OCFLAGS) -c $<
+
+
+.1.man:
+	groff -man -Tascii $< > $@
+
+.1.ps:
+	groff -man -Tps $< > $@
+
+all: solve solve.ps solve.man
+
+solve: $(OFILES)
+	$(OCC) $(OCFLAGS) -standalone -o solve $(OCLIBS) $(OFILES)
+
+clean: 
+	rm -f *.cm? *.o pparser.ml plexer.ml plexer.mli
+
+distclean: clean
+	rm -f ./#*# ./*~ ./.*.sw?
+
+# dependencies
+
+pparser.ml: pparser.mly
+plexer.ml: pparser.ml
+plexer.cmj: pparser.cmi
+algo.cmj: space.cmi pops.cmi plan.cmi pdefinition.cmj object.cmi ndist.cmi \
+    model.cmi loc.cmi expression.cmi conf.cmi algo.cmi 
+blinkered.cmj: planhead.cmi blinkered.cmi 
+conf.cmj: conf.cmi 
+debug.cmj: conf.cmi debug.cmi 
+expression.cmj: pops.cmi pdefinition.cmj expression.cmi 
+finder.cmj: pdefinition.cmj object.cmi model.cmi log.cmi debug.cmi algo.cmi  finder.cmi 
+loc.cmj: loc.cmi 
+log.cmj: plan.cmi pdefinition.cmj model.cmi loc.cmi log.cmi 
+markov.cmj: ndist.cmi markov.cmi
+mk_s.cmj: pops.cmi pdefinition.cmj ndist.cmi 
+model.cmj: pops.cmi pdefinition.cmj ndist.cmi loc.cmi conf.cmi markov.cmi model.cmi
+myopic.cmj: pops.cmi planhead.cmi plan.cmi pdefinition.cmj object.cmi \
+    myopic.cmi 
+ndist.cmj: ndist.cmi 
+object.cmj: pops.cmi pdefinition.cmj ndist.cmi loc.cmi object.cmi 
+pdefinition.cmj: ndist.cmi 
+planhead.cmj: pops.cmi pdefinition.cmj object.cmi model.cmi loc.cmi debug.cmi \
+    algo.cmi planhead.cmi 
+pops.cmj: pparser.cmi pdefinition.cmj pops.cmi 
+solve.cmj: space.cmi pops.cmi pdefinition.cmj object.cmi myopic.cmi model.cmi \
+    log.cmi loc.cmi finder.cmi debug.cmi conf.cmi algo.cmi solve.cmi 
+space.cmj: pdefinition.cmj loc.cmi space.cmi 
+algo.cmi: space.cmi plan.cmi pdefinition.cmj object.cmi model.cmi loc.cmi 
+blinkered.cmi: algo.cmi 
+expression.cmi: pdefinition.cmj loc.cmi 
+finder.cmi: space.cmi pdefinition.cmj object.cmi model.cmi log.cmi loc.cmi \
+    algo.cmi 
+hypothesis.cmi: pdefinion.cmj model.cmi
+log.cmi: plan.cmi pdefinition.cmj model.cmi loc.cmi 
+markov.cmi: ndist.cmi
+model.cmi: pdefinition.cmj ndist.cmi loc.cmi 
+myopic.cmi: plan.cmi pdefinition.cmj object.cmi algo.cmi 
+object.cmi: pdefinition.cmj ndist.cmi loc.cmi 
+planhead.cmi: plan.cmi algo.cmi 
+plan.cmi: loc.cmi 
+pops.cmi: pdefinition.cmj 
+pparser.cmi: pdefinition.cmj
+space.cmi: pdefinition.cmj loc.cmi 

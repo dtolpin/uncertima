@@ -1,0 +1,75 @@
+
+Mon Mar  1 21:41:08 IST 2010
+
+ * done: interface version 1 
+ * todo: improvements and refinements
+
+Mon Mar  1 02:13:42 IST 2010
+
+ * done: observations plot
+ * todo: opinions plot
+
+
+Sat Feb 27 23:24:19 IST 2010
+
+ * done: monitor page mockup, html code in monitor.html
+ * todo: javascript
+   Ideas:
+     update data objects with new data 
+     extract series from data objects
+     extract sections from series for opinions
+    
+     in the first version, only display the last opinions,
+       then add curves for opinions after each stage
+     charts: 
+       observations: normalized distances between subsequent
+          - observations
+          - alphas
+    
+       opinions:
+          - expected utility as function of the chosen coordinate 
+            at the given values of other coordinates
+    
+       later:
+          - use beliefs to visualize knowledge uncertainty
+
+Sun Feb 21 02:01:06 IST 2010
+
+ * done: sample code in mond javascript
+ * todo: read javascript and prototype documentation, prototype source code
+
+Thu Feb 18 19:57:35 IST 2010
+
+ * done: mond server
+ * todo: data retrieval and display in JavaScript
+
+$Id: TODO 928 2010-03-02 18:52:16Z tolpin $
+
+Wed Feb 17 20:01:11 IST 2010
+
+ * done: log parsing
+ * next: netplex server
+
+Wed Jan 20 01:04:50 IST 2010
+
+ * done: optional probing for measurements
+ * next: graphical tools
+
+Tue Jan 19 17:23:39 IST 2010
+
+ * done: xml-rpc client-server
+ * next: optional probing for availability of measurement
+
+Tue Jan 19 03:34:29 IST 2010
+ 
+ * done (not debugged): xml-rpc client
+ * next: xml-rpc server that wraps the simulator, to debug the client
+
+Sun Jan 17 22:22:58 IST 2010
+
+ * xml-rpc client (and server sample) for object control
+ * will use xmlrpc-light because available as debian package
+ * write client	
+ * write standalone object simulator
+ * install xmlrpc-light source to get examples of xmlrpc calls
+ 

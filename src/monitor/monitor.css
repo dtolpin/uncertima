@@ -1,0 +1,27 @@
+/* $Id: monitor.css 986 2010-06-28 17:28:40Z tolpin $ */
+
+body { padding: 1%; background-color: #9af  }
+
+.pane { border: thin dotted gray; padding: 1% 2%; background-color: #eee }
+
+.logpfx { width: 100%; margin: 1% }
+.dashboard { border-style: none; width: 50%; background-color: transparent }
+
+.dashboard .buttons { float: left; margin-left: 0.5em }
+.dashboard .options { float: right; margin-right: 0.5em }
+
+.pane h2 { font-family: sans-serif; font-size: 120%;
+               color: gray; margin-top: -1.2em; padding: 0.2em;
+               border: thin solid gray; background-color: #eee; float: left }
+.observations, .opinions { width: 94%; height: 35%; margin: 4% 2% }
+
+.section { float: left; height: 80%; width: 20%; border-collapse: collapse }
+.section td, .section th { border: thin solid black; text-align: center}
+.section th.colname { color: #036; font-style: italic}
+
+.plot { border: thin solid black; background-color: white;
+        float: right; height: 80% }
+.observations .plot { width: 100% }
+.opinions .plot { width: 65% }
+
+
