@@ -1,7 +1,5 @@
 (* $Id: blinkered.ml 985 2010-06-28 17:28:30Z tolpin $ *)
 
-module Myo = Myopic
-
 let make metamake pdef modl spac objt = 
   let mkiter cost budget = 
     (* use myopic iterator but pump the plans within the budget *)
