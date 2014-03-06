@@ -1,4 +1,4 @@
-# $Id: obmark_manhattan.p,v 1.10 2009/08/16 09:52:51 dvd Exp $
+# $Id: obmark_manhattan.p,v 1.1 2009/11/23 23:22:18 dvd Exp $
 
 # optimization benchmark with manhattan distance
 

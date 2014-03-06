@@ -1,12 +1,12 @@
-# $Id: obmark_free.p,v 1.7 2009/08/16 08:20:47 dvd Exp $
+# $Id: obmark_free.p,v 1.2 2009/11/30 21:23:49 dvd Exp $
 
 # optimization benchmark with free movements
 
 problem obmark_free {
 
   space (x, y) {
-    x = [-1.0, -0.8 .. 1.0];
-    y = [-1.0, -0.8 .. 1.0];
+    x = [-0.8, -0.6 .. 0.8];
+    y = [-0.8, -0.6 .. 0.8];
   }
 
   observe f {
